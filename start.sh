@@ -15,4 +15,5 @@ echo '#!/bin/sh' > ~/.xinitrc
 echo xterm >> ~/.xinitrc
 chmod 755 ~/.xinitrc
 startx &
+
 /usr/src/app/connectedframe.py
