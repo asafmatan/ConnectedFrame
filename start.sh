@@ -4,10 +4,10 @@
 # pages we need more.
 umount /dev/shm && mount -t tmpfs shm /dev/shm
 
-# using local electron module instead of the global electron lets you
-# easily control specific version dependency between your app and electron itself.
-# the syntax below starts an X instance with ONLY our electronJS fired up,
-# it saves you a LOT of resources avoiding full-desktops envs
+# Launch the Tkinter-based picture frame application in a minimal X session.
+# Starting X directly avoids running a full desktop environment and
+# keeps resource usage low while still providing the display needed for
+# the Python GUI.
 
 rm /tmp/.X0-lock &>/dev/null || true
 hostname -b localhost
