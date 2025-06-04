@@ -6,8 +6,10 @@ from PIL import Image, ImageTk
 from glob import glob
 
 dropbox_link = getenv("DROPBOX_LINK")
-download_interval = int(getenv("DOWNLOAD_INTERVAL_HOURS")) * 60 * 60 * 1000
-carrousel_interval = int(getenv("CARROUSEL_INTERVAL_SECONDS")) * 1000
+# Use sane defaults if the interval variables are not provided to avoid
+# crashing when converting `None` to int.
+download_interval = int(getenv("DOWNLOAD_INTERVAL_HOURS", "1")) * 60 * 60 * 1000
+carrousel_interval = int(getenv("CARROUSEL_INTERVAL_SECONDS", "10")) * 1000
 frame_owner = getenv("FRAME_OWNER")
 ifttt_key = getenv("IFTTT_KEY")
 
@@ -151,7 +153,13 @@ next_button = Button(left_column, image=next_icon, borderwidth=0, background="bl
 play_button = Button(right_column, image=play_icon, borderwidth=0, background="black", foreground="white", activebackground="black", activeforeground="white", highlightthickness=0, command=play_pause)
 like_button = Button(right_column, image=like_icon, borderwidth=0, background="black", foreground="white", activebackground="black", activeforeground="white", highlightthickness=0, command=send_event)
 
-center_image = Image.open(image_list[0])
+# Guard against an empty image list which would otherwise raise an
+# IndexError on startup. When no images are available create a blank
+# placeholder so the UI can still start.
+if image_list:
+        center_image = Image.open(image_list[0])
+else:
+        center_image = Image.new('RGB', (640, 480))
 center_photo = ImageTk.PhotoImage(center_image)
 center_label = Label(center_column, image=center_photo)
 
